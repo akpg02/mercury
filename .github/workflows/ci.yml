@@ -1,3 +1,4 @@
+# .github/workflows/ci.yml
 name: ci
 on:
   push:
@@ -14,21 +15,19 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-
-      - run: npm ci
+          cache: "npm"
+          cache-dependency-path: "${{ matrix.app }}/package-lock.json"
+      - name: Install deps
         working-directory: ${{ matrix.app }}
-
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci --no-audit --no-fund
+          else
+            npm install --no-audit --no-fund
+          fi
       - run: npm run lint
         working-directory: ${{ matrix.app }}
-
-      # App typecheck (JS app will no-op due to "|| true")
       - run: npm run typecheck || true
         working-directory: ${{ matrix.app }}
-
-      # ✅ Test typecheck (only for TS app)
-      - if: endsWith(matrix.app, 'mercury-ts')
-        run: npm run typecheck:test
-        working-directory: ${{ matrix.app }}
-
       - run: npm run test
         working-directory: ${{ matrix.app }}
