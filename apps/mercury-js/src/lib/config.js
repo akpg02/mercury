@@ -1,3 +1,4 @@
+// Goal: Fail fast on invalid env; provide normalized values
 const { z } = require('zod');
 
 class ConfigError extends Error {

@@ -6,8 +6,6 @@ let app;
 beforeEach(async () => {
   // fresh app per test to avoid route pollution
   app = buildApp();
-  // ensure routes/hooks are registered
-  await app.ready();
 });
 
 afterEach(async () => {
@@ -24,6 +22,7 @@ describe('global error handler (JS)', () => {
       err.name = 'BadRequestError';
       throw err;
     });
+    await app.ready();
 
     const res = await request(app.server).get('/boom-known');
 
@@ -46,6 +45,7 @@ describe('global error handler (JS)', () => {
       throw new Error('kaboom');
     });
 
+    await app.ready();
     const res = await request(app.server).get('/boom-unknown');
 
     expect(res.statusCode).toBe(500);
@@ -66,6 +66,7 @@ describe('global error handler (JS)', () => {
       throw err;
     });
 
+    await app.ready();
     const res = await request(app.server).get('/boom-validate');
 
     expect(res.statusCode).toBe(400);
