@@ -10,6 +10,9 @@
   "directories": {
     "test": "tests"
   },
+  "overrides": {
+    "picomatch": "4.0.3"
+  },
   "scripts": {
     "dev": "nodemon src/server.js",
     "test": "vitest run",
