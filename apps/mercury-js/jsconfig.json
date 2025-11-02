@@ -1,0 +1,7 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "types": ["vitest/globals", "node"]
+  },
+  "include": ["src/**/*.js", "tests/**/*.js"]
+}

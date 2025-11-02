@@ -7,6 +7,19 @@ module.exports = [
 
   // JS source files
   {
+    root: true,
+    env: { node: true, es2021: true },
+    extends: ['eslint:recommended'],
+    plugins: ['vitest'],
+    ignorePatterns: ['dist', 'coverage'],
+    overrides: [
+      {
+        files: ['tests/**/*.js', '**/*.test.js', '**/*.spec.js'],
+        // Enable vitest rules + globals awareness for test files
+        extends: ['plugin:vitest/recommended'],
+        env: { 'vitest-globals/env': true },
+      },
+    ],
     files: ['**/*.js'],
     languageOptions: {
       ecmaVersion: 2022,
