@@ -1,5 +1,20 @@
 const { z } = require('zod');
 
+class ConfigError extends Error {
+  constructor(issues) {
+    const message = issues
+      .map((i) => {
+        const path = i.path.join('.') || '(root)';
+        return `${path}: ${i.message}`;
+      })
+      .join('; ');
+    super(`Invalid configuration: ${message}`);
+    this.name = 'ConfigError';
+  }
+}
+
+let cached; // simple memoization
+
 const RawEnv = z.object({
   PORT: z.preprocess(
     (v) => (v === '' || v === null ? undefined : v),
@@ -20,6 +35,18 @@ const EnvSchema = RawEnv.transform(
   }),
 );
 
-module.exports = { EnvSchema };
+function loadConfig() {
+  if (cached) return cached;
+
+  const parsed = EnvSchema.safeParse(process.env);
+  if (!parsed.success) throw new ConfigError(parsed.error.issues);
+
+  // freeze to prevent accidental mutation
+  cached = Object.freeze(parsed.data);
+  return cached;
+}
+
+module.exports = { EnvSchema, loadConfig, ConfigError };
 
 // Note: z.preprocess treats empty string as missing for PORT
+//.      Memoization avoids re-parsing for every request
