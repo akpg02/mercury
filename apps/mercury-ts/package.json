@@ -14,8 +14,8 @@
     "start": "node dist/server.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "typecheck:test": "tsc -p tsconfig.vitest.json --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
+    "test": "vitest --config vitest.config.cjs",
+    "test:watch": "vitest --config vitest.config.cjs --watch",
     "lint": "eslint ."
   },
   "keywords": [],
@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.39.0",
-    "@types/node": "^24.9.2",
+    "@types/node": "^24.10.0",
     "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
