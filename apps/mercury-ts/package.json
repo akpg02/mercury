@@ -13,7 +13,7 @@
     "build": "tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "typecheck:test": "tsc -p tsconfig.vitest.json --noEmit",
+    "typecheck:test": "tsc -p tests/tsconfig.json --noEmit",
     "test": "vitest --config vitest.config.cjs",
     "test:watch": "vitest --config vitest.config.cjs --watch",
     "lint": "eslint ."
